@@ -1,0 +1,22 @@
+
+apache_httpsonly: true
+apache_nodefault: true
+certduration: 1095
+
+## test google, opendns
+smokeping_dns_servers:
+    - 8.8.8.8
+    - 208.67.222.222
+smokeping_targets_ref:
+    - www.google.com
+smokeping_targets_fping:
+smokeping_targets_case:
+
+# Ubuntu
+apacheconf: /etc/apache2/conf-enabled
+# Debian
+#apacheconf: /etc/apache2/conf.d
+## htpasswd ? BUG/FIXME!
+#smokepingwebuser: admin
+#smokepingwebpass: admin_pass_to_change
+

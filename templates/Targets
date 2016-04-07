@@ -1,0 +1,90 @@
+*** Targets ***
+## Note: Remember: no space, dot or like in title name
+
+probe = FPing
+
+menu = Top
+title = Network Latency Grapher
+remark = Welcome to the SmokePing website of xxx Company. \
+         Here you will learn all about the latency of our network.
+
++ Local
+
+menu = Local
+title = Local Network
+#parents = owner:/Test/James location:/
+
+++ LocalMachine
+
+menu = Local Machine
+title = This host
+host = localhost
+#alerts = someloss
+
++ Internet
+menu = Internet
+title = Internet references
+
+{% if smokeping_targets_ref %}
+{% for target in smokeping_targets_ref %}
+++ {{ target | regex_replace('\.', '_') }}Curl
+probe = Curl
+menu = {{ target }}Web
+host = {{ target }}
+
+{% if smokeping_dns_servers %}
+{% for dns in smokeping_dns_servers %}
+++ {{ target | regex_replace('\.', '_') }}DNS_{{ dns | regex_replace('\.', '_') }}
+probe = DNS
+menu = {{ target }} DNS {{ dns }}
+host = {{ target }}
+lookup = {{ target }}
+pings = 5
+server = {{ dns }}
+{% endfor %}
+{% endif %}
+
+
+{% endfor %}
+{% endif %}
+
++ Fping
+menu = Fping
+title = Fping tests
+
+{% if smokeping_targets_fping %}
+{% for target in smokeping_targets_fping %}
+++ {{ target | regex_replace('\.', '_') }}Fping
+probe = FPing
+menu = {{ target }}Fping
+host = {{ target }}
+
+{% endfor %}
+{% endif %}
+
++ Case
+menu = cases
+title = Temporary cases
+
+{% if smokeping_targets_case %}
+{% for target in smokeping_targets_case %}
+++ {{ target | regex_replace('\.', '_') }}Curl
+probe = Curl
+menu = {{ target }}Web
+host = {{ target }}
+
+{% if smokeping_dns_servers %}
+{% for dns in smokeping_dns_servers %}
+++ {{ target | regex_replace('\.', '_') }}DNS_{{ dns | regex_replace('\.', '_') }}
+probe = DNS
+menu = {{ target }} DNS {{ dns }}
+host = {{ target }}
+lookup = {{ target }}
+pings = 5
+server = {{ dns }}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+

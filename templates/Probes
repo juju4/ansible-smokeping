@@ -1,0 +1,57 @@
+## http://doc.ubuntu-fr.org/smokeping
+*** Probes ***
++ FPing
+binary = /usr/bin/fping
+
+# these expect to find echoping in /usr/bin
+# if not, you'll have to specify the location separately for each probe
+# + EchoPing         # uses TCP or UDP echo (port 7)
+# + EchoPingDiscard  # uses TCP or UDP discard (port 9)
+# + EchoPingChargen  # uses TCP chargen (port 19)
++ EchoPingSmtp       # SMTP (25/tcp) for mail servers
++ EchoPingHttps      # HTTPS (443/tcp) for web servers
+
++ EchoPingHttp       # HTTP (80/tcp) for web servers and caches
+accept_redirects = yes
+timeout = 5
+offset = 50%
+revalidate_data = no
+
++ EchoPingIcp        # ICP (3130/udp) for caches
+# these need at least echoping 6 with the corresponding plugins
++ EchoPingDNS        # DNS (53/udp or tcp) servers
++ EchoPingLDAP       # LDAP (389/tcp) servers
++ EchoPingWhois      # Whois (43/tcp) servers
+
+## https://oss.oetiker.ch/smokeping/probe/Curl.en.html
+ + Curl
+ binary = /usr/bin/curl
+ forks = 5
+ offset = 50%
+ step = 300
+ # The following variables can be overridden in each target section
+ agent = User-Agent: Lynx/2.8.4rel.1 libwww-FM/2.14 SSL-MM/1.4.1 OpenSSL/0.9.6c
+ extrare = / /
+ follow_redirects = yes
+ include_redirects = yes
+ insecure_ssl = 1
+ interface = eth0
+ pings = 5
+ ssl2 = 1
+ timeout = 20
+ urlformat = http://%host%/ # mandatory
+
+## https://oss.oetiker.ch/smokeping/probe/DNS.en.html
++DNS
+
+ binary = /usr/bin/dig # mandatory
+ forks = 5
+ offset = 50%
+ step = 300
+ timeout = 15
+
+ # The following variables can be overridden in each target section
+ lookup = www.example.org
+ pings = 5
+ server = ns1.someisp.net
+

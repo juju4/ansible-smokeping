@@ -1,0 +1,35 @@
+---
+- name: Debian | smokeping install
+  apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - rrdtool
+    - smokeping
+    - curl
+    - fping
+    - apache2
+
+- file: src=/etc/smokeping/apache2.conf dest=/etc/apache2/conf-available/smokeping.conf state=link
+- file: src=/etc/apache2/conf-available/smokeping.conf dest=/etc/apache2/conf-enabled/smokeping.conf state=link
+- file: dest=/usr/share/modsecurity-crs/activated_rules state=directory mode=0755
+- copy: src=modsecurity_crs_80_smokeping.conf dest=/usr/share/modsecurity-crs/activated_rules/modsecurity_crs_80_smokeping.conf mode=0644
+
+
+- stat: path=/etc/apache2/sites-available/000-default.conf
+  register: apachedefault
+- replace: dest=/etc/apache2/sites-available/000-default.conf regexp='#ServerName www.example.com' replace="ServerName {{ ansible_fqdn }}" backup=yes
+  when: apachedefault.stat.exists
+- lineinfile: dest=/etc/apache2/conf-enabled/servername.conf line="ServerName {{ ansible_fqdn }}" create=yes
+
+- apache2_module: state=present name=cgid
+  notify:
+    - restart apache
+
+#- file: src=/usr/share/smokeping/www/smokeping.fcgi.dist dest=/usr/share/smokeping/www/index.cgi state=link
+
+- template: src=Probes dest=/etc/smokeping/config.d/Probes backup=yes
+  notify:
+    - restart smokeping
+- template: src=Targets dest=/etc/smokeping/config.d/Targets backup=yes
+  notify:
+    - restart smokeping
+
