@@ -8,19 +8,26 @@
     - fping
     - apache2
 
-- file: src=/etc/smokeping/apache2.conf dest=/etc/apache2/conf-available/smokeping.conf state=link
-- file: src=/etc/apache2/conf-available/smokeping.conf dest=/etc/apache2/conf-enabled/smokeping.conf state=link
+- name: symlink apache smokeping config from smokeping config dir
+  file: src=/etc/smokeping/apache2.conf dest=/etc/apache2/conf-available/smokeping.conf state=link
+  when: ansible_distribution == 'Ubuntu' and ansible_lsb.major_release|int <= 14
+- name: enable apache smokeping config
+  file: src=/etc/apache2/conf-available/smokeping.conf dest=/etc/apache2/conf-enabled/smokeping.conf state=link
 - file: dest=/usr/share/modsecurity-crs/activated_rules state=directory mode=0755
-- copy: src=modsecurity_crs_80_smokeping.conf dest=/usr/share/modsecurity-crs/activated_rules/modsecurity_crs_80_smokeping.conf mode=0644
+- name: add modsecurity rules/exceptions for smokeping
+  copy: src=modsecurity_crs_80_smokeping.conf dest=/usr/share/modsecurity-crs/activated_rules/modsecurity_crs_80_smokeping.conf mode=0644
 
 
 - stat: path=/etc/apache2/sites-available/000-default.conf
   register: apachedefault
 - replace: dest=/etc/apache2/sites-available/000-default.conf regexp='#ServerName www.example.com' replace="ServerName {{ ansible_fqdn }}" backup=yes
   when: apachedefault.stat.exists
-- lineinfile: dest=/etc/apache2/conf-enabled/servername.conf line="ServerName {{ ansible_fqdn }}" create=yes
+- name: enforce ansible_fqdn inside apache ServerName
+  lineinfile: dest=/etc/apache2/conf-enabled/servername.conf line="ServerName {{ ansible_fqdn }}" create=yes
+  when: ansible_fqdn is defined and ansible_fqdn != ''
 
-- apache2_module: state=present name=cgid
+- name: add apache module cgid
+  apache2_module: state=present name=cgid
   notify:
     - restart apache
 
