@@ -1,0 +1,28 @@
+#/bin/bash
+## from https://raghdip.blogspot.ca/2014/04/network-monitoring-smokeping-life-ii.html
+date=`date "+%Y-%m-%d"`
+
+BACKUP_DIR="{{ backupdir }}"
+CURRENT_DIR="/var/lib"
+CURRENT_DIR_2="/etc/smokeping"
+RETENTION=30
+SMOKERRA="smokeping-backup-$date-rra.tar.gz"
+SMOKESYS="smokeping-backup-$date-sys.tar.gz"
+
+# Optional: Remove old Backups more than 30days old
+find $BACKUP_DIR/* -mtime +$RETENTION -exec rm -fr {} \; &> /dev/null
+
+#  Backup Smokeping RRD files
+echo "Backing up Smokeping RRD Files..."
+cd $CURRENT_DIR/
+tar zcvf $BACKUP_DIR/$SMOKERRA smokeping/ &> /dev/null
+
+#  Backup Smokeping system files
+echo "Backing up Smokeping System Files..."
+cd $CURRENT_DIR_2/
+tar zcvf $BACKUP_DIR/$SMOKESYS  config.d/ &> /dev/null
+
+# test archives
+tar tzf $BACKUP_DIR/$SMOKERRA > /dev/null
+tar tzf $BACKUP_DIR/$SMOKESYS > /dev/null
+

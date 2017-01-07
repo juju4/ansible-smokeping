@@ -1,3 +1,7 @@
+---
+
+scriptsdir: /usr/local/scripts
+backupdir: /var/_backup
 
 apache_httpsonly: true
 apache_nodefault: true

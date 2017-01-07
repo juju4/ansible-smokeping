@@ -1,0 +1,22 @@
+---
+
+smokeping_pkg:
+    - rrdtool
+    - curl
+    - fping
+    - httpd
+    - smokeping
+    - httpd-devel
+    - rrdtool-perl
+    - perl
+    - perl-Sys-Syslog
+    - perl-CPAN
+    - perl-local-lib
+    - perl-Time-HiRes
+#    - perl-RRD-Simple
+#    - perl-FCGI
+#    - "@Development tools"
+#    - mod_fcgid
+    - libselinux-python
+    - selinux-policy
+

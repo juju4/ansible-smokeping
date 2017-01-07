@@ -1,0 +1,21 @@
+#!/bin/sh
+
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+umask 022 
+
+if [ $# -gt 1 -a -r "$1"-sys.tar.gz ]; then
+    backupfile=$1
+else
+    backupfile={{ backupdir }}/smokeping-backup-yyyy-mm-dd
+fi
+
+service smokeping stop
+
+cd /var/lib/
+tar zxvf $backupfile-rra.tar.gz
+
+cd /etc/smokeping/
+tar zxvf $backupfile-sys.tar.gz
+
+service smokeping start
+

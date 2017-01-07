@@ -1,0 +1,20 @@
+---
+
+- name: ensure backupdir and scriptsdir exists
+  file: path={{ item }} state=directory mode=0755
+  with_items:
+    - "{{ backupdir }}"
+    - "{{ scriptsdir }}"
+
+- name: add backup script
+  template: src=smokeping-backup.sh.j2 dest={{ scriptsdir }}/smokeping-backup.sh mode=0755
+- name: add restore script
+  template: src=smokeping-restore.sh.j2 dest={{ scriptsdir }}/smokeping-restore.sh mode=0755
+
+- name: setup cron backup
+  cron: name="smokeping-backup" minute="30" hour="3" weekday="0"
+    job="{{ scriptsdir }}/smokeping-backup.sh > /dev/null 2>&1"
+    user=root
+    cron_file=ansible_smokeping-backup
+
+

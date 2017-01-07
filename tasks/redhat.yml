@@ -1,56 +1,11 @@
 ---
-## for haveged (better entropy for gpg)
-- include: redhat-epel.yml
 
 - name: yum | smokeping and dependencies install
   yum: name="{{item}}" state=present update_cache=yes
-  with_items:
-    - rrdtool
-    - curl
-    - fping
-    - httpd
-#    - smokeping
-    - httpd-devel
-    - rrdtool-perl
-    - perl
-    - perl-Sys-Syslog
-    - perl-CPAN
-    - perl-local-lib
-    - perl-Time-HiRes
-    - "@Development tools"
+  with_items: "{{ smokeping_pkg }}"
 
 - name: yum | Ensure httpd is running and enabled on boot.
   service: name=httpd state=started enabled=yes
-
-- name: download smokeping
-  get_url: url=http://oss.oetiker.ch/smokeping/pub/smokeping-2.6.11.tar.gz dest=/root/smokeping-2.6.11.tar.gz mode=0644
-
-- name: extract smokeping
-  unarchive: src=/root/smokeping-2.6.11.tar.gz dest=/root copy=no creates=/root/smokeping-2.6.11/setup
-
-- set_fact:
-    smokeping_root: /opt/smokeping
-
-- name: ensure smokeping rootdir exists
-  file: dest="{{ item }}" state=directory mode=0755
-  with_items:
-    - "{{ smokeping_root }}"
-    - "{{ smokeping_root }}/data"
-    - "{{ smokeping_root }}/var"
-
-- stat: path="/root/.smokepinginstall_done"
-  register: done
-- name: execute setup
-  command: "{{ item.c }} chdir={{ item.d }}"
-  with_items:
-    - { c: "./build-perl-modules.sh", d: "/root/smokeping-2.6.11/setup" }
-    - { c: "cp -r thirdparty {{ smokeping_root }}/", d: "/root/smokeping-2.6.11" }
-    - { c: "./configure --prefix={{ smokeping_root }}", d: "/root/smokeping-2.6.11" }
-    - { c: "make install", d: "/root/smokeping-2.6.11" }
-  when: not done.stat.exists
-
-- file: path="/root/.smokepinginstall_done" state=touch
-  when: not done.stat.exists
 
 ## FIXME! not idempotent
 #- selinux: state=disabled

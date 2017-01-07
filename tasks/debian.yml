@@ -1,12 +1,7 @@
 ---
 - name: Debian | smokeping install
   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
-  with_items:
-    - rrdtool
-    - smokeping
-    - curl
-    - fping
-    - apache2
+  with_items: "{{ smokeping_pkg }}"
 
 - name: symlink apache smokeping config from smokeping config dir
   file: src=/etc/smokeping/apache2.conf dest=/etc/apache2/conf-available/smokeping.conf state=link
@@ -39,4 +34,8 @@
 - template: src=Targets dest=/etc/smokeping/config.d/Targets backup=yes
   notify:
     - restart smokeping
+
+- file: dest=/etc/aide/aide.conf.d state=directory mode=0755
+- name: add additional aide HIDS configuration
+  copy: src=99_aide_local_smokeping dest=/etc/aide/aide.conf.d/99_aide_local_smokeping mode=0644
 

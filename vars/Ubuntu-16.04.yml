@@ -1,0 +1,8 @@
+---
+
+smokeping_pkg:
+    - rrdtool
+    - smokeping
+    - curl
+    - fping
+    - apache2

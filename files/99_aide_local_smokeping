@@ -1,0 +1,5 @@
+## /etc/aide/aide.conf.d
+/var/lib/smokeping/__sortercache$ VarDir
+#/var/lib/smokeping/__sortercache/data\..*\.storable$ InodeData-b-i
+#/var/lib/smokeping/__sortercache/data\..*\.storable$ OwnerMode+n+X
+/var/lib/smokeping/__sortercache/data\..*\.storable$ OwnerMode

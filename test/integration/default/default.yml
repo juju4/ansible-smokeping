@@ -5,5 +5,5 @@
 #  vars:
 #    - a:
   roles:
-    - smokeping
+    - juju4.smokeping
 
