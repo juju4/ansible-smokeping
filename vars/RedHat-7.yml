@@ -19,4 +19,5 @@ smokeping_pkg:
 #    - mod_fcgid
     - libselinux-python
     - selinux-policy
+    - crontabs
 
