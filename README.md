@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/juju4/ansible-smokeping.svg?branch=master)](https://travis-ci.org/juju4/ansible-smokeping)
+[![Build Status - Master](https://travis-ci.org/juju4/ansible-smokeping.svg?branch=master)](https://travis-ci.org/juju4/ansible-smokeping)
+[![Build Status - Devel](https://travis-ci.org/juju4/ansible-smokeping.svg?branch=devel)](https://travis-ci.org/juju4/ansible-smokeping/branches)
 # Smokeping ansible role
 
 A simple ansible role to setup smokeping
@@ -10,6 +11,7 @@ http://oss.oetiker.ch/smokeping/
 It was tested on the following versions:
  * 1.9
  * 2.0
+ * 2.2
 
 ### Operating systems
 
@@ -24,7 +26,7 @@ For example
 ```
 - host: all
   roles:
-    - smokeping
+    - juju4.smokeping
 ```
 
 After installation, connect on https://SERVER/smokeping/smokeping.cgi
@@ -40,13 +42,13 @@ This role has a travis basic test (for github), more advanced with kitchen and a
 
 Once you ensured all necessary roles are present, You can test with:
 ```
-$ cd /path/to/roles/smokeping
+$ cd /path/to/roles/juju4.smokeping
 $ kitchen verify
 $ kitchen login
 ```
 or
 ```
-$ cd /path/to/roles/smokeping/test/vagrant
+$ cd /path/to/roles/juju4.smokeping/test/vagrant
 $ vagrant up
 $ vagrant ssh
 ```
