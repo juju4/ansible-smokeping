@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 ## http://doc.ubuntu-fr.org/smokeping
 *** Probes ***
 + FPing

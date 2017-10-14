@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 *** Targets ***
 ## Note: Remember: no space, dot or like in title name
 
