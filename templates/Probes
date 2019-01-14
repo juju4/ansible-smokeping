@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 ## http://doc.ubuntu-fr.org/smokeping
 *** Probes ***
 + FPing
