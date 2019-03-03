@@ -1,8 +1,5 @@
 ---
-## Enable trusty beta
-#sudo: required
-dist: trusty
-## Reminder: Travis test only valid on Ubuntu12.04, 14.04 in testing, Centos through docker (leave it to kitchen...)
+dist: xenial
 language: python
 python: "2.7"
 before_install:
@@ -28,4 +25,3 @@ script:
 
 ## Run the role/playbook again, checking to make sure it's idempotent. = Known issue
   - "ansible-playbook -i inventory test/integration/default/default.yml --connection=local --sudo | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 1)"
-
