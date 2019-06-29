@@ -3,6 +3,8 @@
 scriptsdir: /usr/local/scripts
 backupdir: /var/_backup
 
+smokeping_root: /opt/smokeping
+
 apache_httpsonly: true
 apache_nodefault: true
 certduration: 1095
@@ -23,4 +25,3 @@ apacheconf: /etc/apache2/conf-enabled
 ## htpasswd ? BUG/FIXME!
 #smokepingwebuser: admin
 #smokepingwebpass: admin_pass_to_change
-

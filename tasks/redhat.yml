@@ -1,8 +1,9 @@
 ---
 
 - name: yum | smokeping and dependencies install
-  yum: name="{{item}}" state=present update_cache=yes
-  with_items: "{{ smokeping_pkg }}"
+  yum: name="{{ smokeping_pkg }}" state=present update_cache=yes
+  register: pkg_result
+  until: pkg_result is success
 
 - name: yum | Ensure httpd is running and enabled on boot.
   service: name=httpd state=started enabled=yes
@@ -10,4 +11,3 @@
 ## FIXME! not idempotent
 #- selinux: state=disabled
 - selinux: policy=targeted state=permissive
-

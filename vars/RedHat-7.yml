@@ -20,4 +20,3 @@ smokeping_pkg:
     - libselinux-python
     - selinux-policy
     - crontabs
-
