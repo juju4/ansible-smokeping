@@ -12,7 +12,7 @@ before_install:
 install:
   - pip install ansible
   - ansible --version
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  - "{ echo '[defaults]'; echo 'callback_whitelist = profile_tasks, timer'; echo 'roles_path = ../'; } >> ansible.cfg"
   - cat ansible.cfg
 script:
   - "echo localhost > inventory"
